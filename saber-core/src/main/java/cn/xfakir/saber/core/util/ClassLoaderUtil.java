@@ -45,6 +45,10 @@ public class ClassLoaderUtil {
         return clazz;
     }
 
+    public static Class<?> loadClass(String className) {
+        return loadClass(className,false);
+    }
+
     /**
      * 加载并获取指定包名下的所有类
      *
