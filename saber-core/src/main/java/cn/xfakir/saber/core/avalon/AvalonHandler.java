@@ -1,4 +1,4 @@
-package cn.xfakir.saber.core.web.avalon;
+package cn.xfakir.saber.core.avalon;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;

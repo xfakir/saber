@@ -1,4 +1,4 @@
-package cn.xfakir.saber.core.web.avalon;
+package cn.xfakir.saber.core.avalon;
 
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;

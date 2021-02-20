@@ -1,4 +1,4 @@
-package cn.xfakir.saber.core.web.avalon;
+package cn.xfakir.saber.core.avalon;
 
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.HttpRequest;
@@ -8,6 +8,9 @@ import io.netty.handler.codec.http.QueryStringEncoder;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 无用类 用mockhttprequest
+ */
 public class AvalonRequest {
     private ChannelHandlerContext context;
 

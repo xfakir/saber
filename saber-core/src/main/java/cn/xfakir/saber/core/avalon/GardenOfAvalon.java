@@ -1,4 +1,4 @@
-package cn.xfakir.saber.core.web.avalon;
+package cn.xfakir.saber.core.avalon;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
