@@ -11,6 +11,7 @@ import java.net.JarURLConnection;
 import java.net.URL;
 import java.util.Enumeration;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -56,7 +57,7 @@ public class ClassLoaderUtil {
      * @return
      */
     public static Set<Class<?>> getClassSet(String packageName) {
-        Set<Class<?>> classSet = new HashSet<Class<?>>();
+        Set<Class<?>> classSet = new LinkedHashSet<Class<?>>();
         Enumeration<URL> urls = null;
         try {
             urls = Thread.currentThread().getContextClassLoader().getResources(packageName.replace(".", "/"));
