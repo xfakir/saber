@@ -45,4 +45,17 @@ public class ClassUtil {
         classSet.addAll(getServiceClassSet());
         return classSet;
     }
+
+    public static ClassLoader currentClassLoader() {
+        return Thread.currentThread().getContextClassLoader();
+    }
+
+    public static Class getClass(final String className) {
+
+        try {
+            return currentClassLoader().loadClass(className);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
