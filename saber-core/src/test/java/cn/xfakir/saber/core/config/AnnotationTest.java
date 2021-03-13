@@ -5,7 +5,7 @@ import cn.xfakir.saber.core.web.enums.RequestMethod;
 
 import java.lang.annotation.Annotation;
 
-@RequestMapping("aaaa")
+@RequestMapping("/aaaa")
 public class AnnotationTest {
 
 
@@ -14,7 +14,6 @@ public class AnnotationTest {
         RequestMapping requestMapping = (RequestMapping) clazz.getAnnotation(RequestMapping.class);
         System.out.println("--------------");
         System.out.println(requestMapping.value());
-        System.out.println(requestMapping.path());
         System.out.println(requestMapping.method());
         System.out.println("---------------");
 

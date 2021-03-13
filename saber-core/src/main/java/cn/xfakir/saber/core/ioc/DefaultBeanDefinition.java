@@ -5,6 +5,14 @@ public class DefaultBeanDefinition implements BeanDefinition{
 
     private String scope;
 
+    private volatile Object beanClass;
+
+    public DefaultBeanDefinition(String beanClassName, String scope, Object beanClass) {
+        this.beanClassName = beanClassName;
+        this.scope = scope;
+        this.beanClass = beanClass;
+    }
+
     @Override
     public String getBeanClassName() {
         return this.beanClassName;
@@ -28,5 +36,13 @@ public class DefaultBeanDefinition implements BeanDefinition{
     @Override
     public boolean isSingleton() {
         return "singleton".equals(getScope());
+    }
+
+    public Class<?> getBeanClass() {
+        return (Class<?>) beanClass;
+    }
+
+    public void setBeanClass(Class<?> beanClass) {
+        this.beanClass = beanClass;
     }
 }

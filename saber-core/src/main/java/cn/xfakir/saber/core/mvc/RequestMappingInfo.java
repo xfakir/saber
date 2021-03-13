@@ -7,22 +7,22 @@ import java.util.Objects;
 import java.util.Set;
 
 public class RequestMappingInfo {
-    private Set<String> patternSet = Collections.singleton("");
+    private final String pattern;
 
-    private Set<RequestMethod> requestMethodSet = Collections.emptySet();
+    private final RequestMethod requestMethod;
 
 
-    public RequestMappingInfo(Set<String> patternSet, Set<RequestMethod> requestMethodSet) {
-        this.patternSet = patternSet;
-        this.requestMethodSet = requestMethodSet;
+    public RequestMappingInfo(String pattern, RequestMethod requestMethod) {
+        this.pattern = pattern;
+        this.requestMethod = requestMethod;
     }
 
-    public Set<String> getPatternSet() {
-        return patternSet;
+    public String getPattern() {
+        return pattern;
     }
 
-    public Set<RequestMethod> getRequestMethodSet() {
-        return requestMethodSet;
+    public RequestMethod getRequestMethod() {
+        return requestMethod;
     }
 
     @Override
@@ -34,12 +34,12 @@ public class RequestMappingInfo {
             return false;
         }
         RequestMappingInfo that = (RequestMappingInfo) o;
-        return Objects.equals(patternSet, that.patternSet) &&
-                Objects.equals(requestMethodSet, that.requestMethodSet);
+        return Objects.equals(pattern, that.pattern) &&
+                Objects.equals(requestMethod, that.requestMethod);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(patternSet, requestMethodSet);
+        return Objects.hash(pattern, requestMethod);
     }
 }

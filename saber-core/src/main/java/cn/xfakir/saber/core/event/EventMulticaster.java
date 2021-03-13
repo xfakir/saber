@@ -1,6 +1,6 @@
 package cn.xfakir.saber.core.event;
 
-public interface EventPublisher {
+public interface EventMulticaster {
     void addListener(SaberListener<?> listener);
 
     void removeListener(SaberListener<?> listener);

@@ -1,8 +1,10 @@
 package cn.xfakir.saber.core.util;
 
+import cn.xfakir.saber.core.exception.SaberException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
@@ -15,7 +17,7 @@ public class ReflectionUtil {
             instance = clazz.newInstance();
         } catch (Exception e) {
             LOGGER.error("new instance failure",e);
-            throw new RuntimeException(e);
+            throw new SaberException(e);
         }
         return instance;
     }
@@ -39,6 +41,12 @@ public class ReflectionUtil {
         } catch (Exception e) {
             LOGGER.error("set flied failure",e);
             throw new RuntimeException(e);
+        }
+    }
+
+    public static void makeAccessible(Constructor<?> ctor) {
+        if(!ctor.isAccessible()) {
+            ctor.setAccessible(true);
         }
     }
 }

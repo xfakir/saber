@@ -10,6 +10,8 @@ import java.io.PrintWriter;
 
 public class RequestMappingHandlerAdapter implements HandlerAdapter{
 
+    //参数解析器
+
     @Override
     public boolean supports(Object handler) {
         return (handler instanceof HandlerMethod);
@@ -18,7 +20,7 @@ public class RequestMappingHandlerAdapter implements HandlerAdapter{
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception{
         HandlerMethod handlerMethod = (HandlerMethod) handler;
-        Object result = ReflectionUtil.invokeMethod(handler, handlerMethod.getMethod());
+        Object result = ReflectionUtil.invokeMethod(handlerMethod.getBean(), handlerMethod.getMethod());
         ObjectMapper objectMapper = new ObjectMapper();
         String output = objectMapper.writeValueAsString(result);
         handleReturnValue(output,response);

@@ -9,7 +9,7 @@ import java.util.Map;
 
 public class IocUtil {
     static {
-        Map<Class<?>, Object> beanMap = BeanUtil.getBeanMap();
+        /*Map<Class<?>, Object> beanMap = BeanUtil.getBeanMap();
         if (!beanMap.isEmpty()) {
             for (Map.Entry<Class<?>,Object> beanEntry : beanMap.entrySet()) {
                 Class<?> beanClass = beanEntry.getKey();
@@ -27,6 +27,6 @@ public class IocUtil {
                     }
                 }
             }
-        }
+        }*/
     }
 }
