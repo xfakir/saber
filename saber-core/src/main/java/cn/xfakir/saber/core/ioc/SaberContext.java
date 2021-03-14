@@ -28,7 +28,7 @@ public class SaberContext extends AbstractContext{
             this.gardenOfAvalon = new GardenOfAvalon();
         }
 
-        Avalon avalon = new Avalon();
+        Avalon avalon = new Avalon(Integer.parseInt(getProperty("port")));
         prepareContext(avalon);
         this.gardenOfAvalon.setAvalon(avalon);
         startServer();
@@ -42,6 +42,7 @@ public class SaberContext extends AbstractContext{
         AvalonContext context = new AvalonContext();
         context.setAttribute("saberContext",this);
     }
+
 
 
 }

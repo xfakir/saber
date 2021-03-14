@@ -5,10 +5,12 @@ import java.lang.reflect.Method;
 public class HandlerMethod {
     private Object bean;
     private Method method;
+    private final MethodParameter[] parameters;
 
-    public HandlerMethod(Object bean, Method method) {
+    public HandlerMethod(Object bean, Method method, MethodParameter[] parameters) {
         this.bean = bean;
         this.method = method;
+        this.parameters = parameters;
     }
 
     public Object getBean() {
@@ -17,5 +19,9 @@ public class HandlerMethod {
 
     public Method getMethod() {
         return method;
+    }
+
+    public MethodParameter[] getParameters() {
+        return parameters;
     }
 }

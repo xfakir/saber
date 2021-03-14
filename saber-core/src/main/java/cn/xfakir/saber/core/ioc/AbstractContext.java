@@ -3,13 +3,12 @@ package cn.xfakir.saber.core.ioc;
 import cn.xfakir.saber.core.event.*;
 import cn.xfakir.saber.core.mvc.SaberRefreshEvent;
 import cn.xfakir.saber.core.util.ClassLoaderUtil;
+import cn.xfakir.saber.core.util.PropertiesLoaderUtil;
 
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public abstract class AbstractContext extends DefaultBeanFactory implements SaberEventPublisher {
+    protected String source;
     private String sourcePackage;
 
     private EventMulticaster saberEventMulticaster;
@@ -17,6 +16,7 @@ public abstract class AbstractContext extends DefaultBeanFactory implements Sabe
     private final Set<SaberListener<?>> saberListenerSet = new LinkedHashSet<>();
 
     private final DefaultBeanFactory beanFactory;
+    private Map<String, String> properties;
 
 
     //private Set<SaberEvent> saberEventSet;
@@ -29,6 +29,7 @@ public abstract class AbstractContext extends DefaultBeanFactory implements Sabe
 
     public void init() {
         prepareBeanFactory(beanFactory);
+        loadProperties(source);
         scanAndLoadClass(beanFactory);
         registerDefaultComponent(beanFactory);
         initSaberEventMulticaster();
@@ -86,5 +87,19 @@ public abstract class AbstractContext extends DefaultBeanFactory implements Sabe
     @Override
     public void publishEvent(SaberEvent event) {
         getSaberEventMulticaster().multicastEvent(event);
+    }
+
+
+    public void setSourcePath(String source) {
+        this.source = source;
+    }
+
+     private void loadProperties(Object source) {
+        this.properties = PropertiesLoaderUtil.loadProperties(source.getClass());
+     }
+
+
+    public String getProperty(String name) {
+        return this.properties.get(name);
     }
 }

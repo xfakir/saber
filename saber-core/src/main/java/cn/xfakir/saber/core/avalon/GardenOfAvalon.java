@@ -33,7 +33,15 @@ public class GardenOfAvalon {
     }
 
     public void start() {
-        getAvalon().start();
+        Thread avalonThread = new Thread("avalon"){
+            @Override
+            public void run() {
+                getAvalon().start();
+            }
+        };
+        avalonThread.setContextClassLoader(getClass().getClassLoader());
+        avalonThread.setDaemon(true);
+        avalonThread.start();
     }
 
 

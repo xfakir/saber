@@ -1,5 +1,6 @@
 package cn.xfakir.saber.core.mvc;
 
+import cn.xfakir.saber.core.avalon.HttpRequest;
 import cn.xfakir.saber.core.exception.SaberException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +21,7 @@ public class HandlerMethodArgumentResolverComposite implements HandlerMethodArgu
     }
 
     @Override
-    public Object resolveArgument(MethodParameter methodParameter, HttpServletRequest request) {
+    public Object resolveArgument(MethodParameter methodParameter, HttpRequest request) {
         HandlerMethodArgumentResolver resolver = getArgumentResolver(methodParameter);
         if (resolver == null) {
             throw new SaberException("no supporting resolver");

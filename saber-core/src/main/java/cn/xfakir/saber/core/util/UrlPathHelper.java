@@ -1,12 +1,14 @@
 package cn.xfakir.saber.core.util;
 
+import cn.xfakir.saber.core.avalon.HttpRequest;
 import org.apache.commons.lang3.StringUtils;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+
 
 public class UrlPathHelper {
-    public static String getPathFromRequest(HttpServletRequest request) {
-        return request.getServletPath();
+    public static String getPathFromRequest(HttpRequest request) {
+        return request.getUri();
     }
 
     public static String getLookUpUrlFromFullPath(String path) {
@@ -15,5 +17,10 @@ public class UrlPathHelper {
 
     public static String[] getParametersFromPath(String path) {
         return StringUtils.substringsBetween(path,"{","}");
+    }
+
+    public static String[] getParametersFromUri(String requestUri, int length) {
+        String[] split = requestUri.split("/");
+        return Arrays.copyOfRange(split,split.length-length,split.length);
     }
 }

@@ -12,17 +12,17 @@ public class MethodParameter {
 
     private Class<?> containingClass;
 
-    private Annotation annotation;
+    private Annotation[] annotations;
 
     private String parameterName;
 
     public MethodParameter(Method method, int parameterIndex, Class<?> parameterType, Class<?> containingClass,
-                           Annotation annotation, String parameterName) {
+                           Annotation[] annotations, String parameterName) {
         this.method = method;
         this.parameterIndex = parameterIndex;
         this.parameterType = parameterType;
         this.containingClass = containingClass;
-        this.annotation = annotation;
+        this.annotations = annotations;
         this.parameterName = parameterName;
     }
 
@@ -42,8 +42,8 @@ public class MethodParameter {
         return containingClass;
     }
 
-    public Annotation getAnnotation() {
-        return annotation;
+    public Annotation[] getAnnotations() {
+        return annotations;
     }
 
     public String getParameterName() {
@@ -51,6 +51,11 @@ public class MethodParameter {
     }
 
     public boolean hasAnnotation(Class<?> annotationType) {
-        return this.annotation.annotationType() == annotationType;
+        for (Annotation annotation : getAnnotations()) {
+            if (annotation.annotationType() == annotationType) {
+                return true;
+            }
+        }
+        return false;
     }
 }

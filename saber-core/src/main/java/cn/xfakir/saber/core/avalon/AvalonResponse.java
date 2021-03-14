@@ -2,32 +2,39 @@ package cn.xfakir.saber.core.avalon;
 
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.http.DefaultFullHttpResponse;
-import io.netty.handler.codec.http.HttpRequest;
-import io.netty.handler.codec.http.HttpResponseStatus;
-import io.netty.handler.codec.http.HttpVersion;
+import io.netty.handler.codec.http.*;
 
-public class AvalonResponse {
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
+import java.util.Collection;
+import java.util.Locale;
+
+public class AvalonResponse implements HttpResponse {
     private ChannelHandlerContext context;
 
-    private HttpRequest request;
+    private FullHttpResponse response;
 
-    public AvalonResponse(ChannelHandlerContext context, HttpRequest request) {
+    public AvalonResponse(ChannelHandlerContext context, FullHttpResponse response) {
         this.context = context;
-        this.request = request;
+        this.response = response;
     }
 
-    public void write(String out) throws Exception {
+    @Override
+    public void write(String out) {
         try {
             if (out == null || out.length() == 0) {
                 return;
             }
-            DefaultFullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1,
-                    HttpResponseStatus.OK, Unpooled.wrappedBuffer(out.getBytes("UTF-8")));
-            context.write(response);
+            context.write(response.replace(Unpooled.wrappedBuffer(out.getBytes(StandardCharsets.UTF_8))));
         } finally {
             context.flush();
             context.close();
         }
     }
+
+
 }

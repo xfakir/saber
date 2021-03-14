@@ -3,6 +3,8 @@ package cn.xfakir.saber.core.mvc;
 import cn.xfakir.saber.core.annotation.Controller;
 import cn.xfakir.saber.core.annotation.RequestMapping;
 import cn.xfakir.saber.core.avalon.AvalonServlet;
+import cn.xfakir.saber.core.avalon.HttpRequest;
+import cn.xfakir.saber.core.avalon.HttpResponse;
 import cn.xfakir.saber.core.avalon.ServletContext;
 import cn.xfakir.saber.core.boot.Saber;
 import cn.xfakir.saber.core.event.SaberListener;
@@ -32,13 +34,13 @@ public class DispatcherServlet implements AvalonServlet,SaberListener<SaberRefre
 
 
     @Override
-    public void service(HttpServletRequest request, HttpServletResponse response){
+    public void service(HttpRequest request, HttpResponse response){
         request.setAttribute("saberContext",getSaberContext());
         doDispatch(request,response);
     }
 
-    private void doDispatch(HttpServletRequest request, HttpServletResponse response) {
-        HttpServletRequest servletRequest = request;
+    private void doDispatch(HttpRequest request, HttpResponse response) {
+        HttpRequest httpRequest = request;
         HandlerExecutionChain chain = getHandler(request);
         if (chain == null) {
             throw new SaberException("no handler");
@@ -66,7 +68,7 @@ public class DispatcherServlet implements AvalonServlet,SaberListener<SaberRefre
         return null;
     }
 
-    private HandlerExecutionChain getHandler(HttpServletRequest request) {
+    private HandlerExecutionChain getHandler(HttpRequest request) {
         for (HandlerMapping handlerMapping : this.handlerMappings) {
             return handlerMapping.getHandler(request);
         }

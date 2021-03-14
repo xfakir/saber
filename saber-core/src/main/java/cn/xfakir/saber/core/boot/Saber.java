@@ -4,6 +4,10 @@ import cn.xfakir.saber.core.exception.SaberException;
 import cn.xfakir.saber.core.ioc.AbstractContext;
 import cn.xfakir.saber.core.ioc.SaberContext;
 import cn.xfakir.saber.core.util.BeanUtil;
+import cn.xfakir.saber.core.util.ClassPathUtil;
+import cn.xfakir.saber.core.util.PropertiesLoaderUtil;
+
+import java.util.Map;
 
 public class Saber {
     private String source;
@@ -11,15 +15,20 @@ public class Saber {
     private static final String DEFAULT_CONTEXT_CLASS = "cn.xfakir.saber.core.ioc.SaberContext";
 
     private Class<? extends AbstractContext> saberContextClass;
+    //private Map<String, String> properties;
 
     public Saber(Object source) {
-        this.source = (String) source;
         init(source);
     }
 
     private void init(Object source) {
-        //
+        this.source = ClassPathUtil.getSourcePath(source.getClass());
+        //loadProperties(source);
     }
+
+    /*private void loadProperties(Object source) {
+        this.properties = PropertiesLoaderUtil.loadProperties(source.getClass());
+    }*/
 
 
     public static void excalibur(Object source) {
@@ -38,18 +47,11 @@ public class Saber {
     }
 
     private void initContext(SaberContext saberContext) {
+        saberContext.setSourcePath(this.source);
         saberContext.init();
     }
 
     private SaberContext createSaberContext() {
-        Class<?> contextClass = this.saberContextClass;
-        if (contextClass == null) {
-            try {
-                Class.forName(DEFAULT_CONTEXT_CLASS);
-            } catch (ClassNotFoundException ex) {
-                throw new IllegalStateException(ex);
-            }
-        }
-        return (SaberContext) BeanUtil.instantiateClass(contextClass);
+        return new SaberContext(source);
     }
 }

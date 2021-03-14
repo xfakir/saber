@@ -14,6 +14,13 @@ import io.netty.handler.codec.http.HttpResponseEncoder;
 public class Avalon {
     private int port = 8080;
 
+    public Avalon() {
+    }
+
+    public Avalon(int port) {
+        this.port = port;
+    }
+
     private ServletContext servletContext;
 
     public ServletContext getServletContext() {
