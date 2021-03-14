@@ -11,7 +11,7 @@ public interface HttpRequest {
 
     String getUri();
 
-    Map<String,Object> getParameters();
+    Map<String,String> getParameters();
 
     Object getParameter(String name);
 

@@ -3,6 +3,7 @@ package cn.xfakir.saber.core.avalon;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.http.*;
+import io.netty.util.AsciiString;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
@@ -25,15 +26,20 @@ public class AvalonResponse implements HttpResponse {
 
     @Override
     public void write(String out) {
-        try {
-            if (out == null || out.length() == 0) {
-                return;
-            }
-            context.write(response.replace(Unpooled.wrappedBuffer(out.getBytes(StandardCharsets.UTF_8))));
-        } finally {
-            context.flush();
-            context.close();
+        if (out == null || out.length() == 0) {
+            return;
         }
+        response.replace(Unpooled.wrappedBuffer(out.getBytes(StandardCharsets.UTF_8)));
+    }
+
+    @Override
+    public void setHeader(AsciiString contentType, String value) {
+        this.response.headers().set(contentType,value);
+    }
+
+    @Override
+    public FullHttpResponse getResponse() {
+        return this.response;
     }
 
 

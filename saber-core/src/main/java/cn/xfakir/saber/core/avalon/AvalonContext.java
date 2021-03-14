@@ -18,6 +18,7 @@ public class AvalonContext implements ServletContext {
 
     private void init() {
         findInitializerClasses();
+        invokeInitializers();
     }
 
     private void findInitializerClasses() {
@@ -50,6 +51,11 @@ public class AvalonContext implements ServletContext {
         for (Map.Entry<String,AvalonServlet> entry : this.servletMap.entrySet()) {
             entry.getValue().init();
         }
+    }
+
+    @Override
+    public AvalonServlet getServlet(String serlvetName) {
+        return this.servletMap.get(serlvetName);
     }
 
     @Override

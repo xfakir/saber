@@ -17,7 +17,7 @@ public class SaberServletInitializer implements SaberInitializer{
             dispatcherServlet.setServletContext(servletContext);
             servletContext.addServlet("dispatcherServlet",dispatcherServlet);
             SaberContext saberContext = (SaberContext) servletContext.getAttribute("saberContext");
-            saberContext.registerSingleton("dispatchServlet",dispatcherServlet);
+            saberContext.registerSingleton("dispatcherServlet",dispatcherServlet);
         } catch (ClassNotFoundException e) {
             throw new SaberException(e);
         }

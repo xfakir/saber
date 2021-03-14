@@ -13,4 +13,6 @@ public interface ServletContext {
     void setAttribute(String attributeName, Object object);
 
     void initServlet();
+
+    AvalonServlet getServlet(String dispatchServlet);
 }

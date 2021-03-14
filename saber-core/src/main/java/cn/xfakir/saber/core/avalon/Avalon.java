@@ -8,8 +8,10 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpRequestDecoder;
 import io.netty.handler.codec.http.HttpResponseEncoder;
+import io.netty.handler.codec.http.HttpServerCodec;
 
 public class Avalon {
     private int port = 8080;
@@ -53,8 +55,10 @@ public class Avalon {
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel client) throws Exception {
-                            client.pipeline().addLast(new HttpResponseEncoder());
-                            client.pipeline().addLast(new HttpRequestDecoder());
+                            client.pipeline().addLast(new HttpServerCodec());
+                            client.pipeline().addLast(new HttpObjectAggregator(65536));
+                            client.pipeline().addLast(new ParameterResolverHandler());
+                            client.pipeline().addLast(new AvalonRequestWrapperHandler());
                             client.pipeline().addLast(new AvalonHandler(servletContext));
                         }
                     })

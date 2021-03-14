@@ -14,12 +14,15 @@ public class AvalonRequest implements HttpRequest {
 
     private Map<String,Object> attributes = new HashMap<>();
 
+    private Map<String,String> parameters = new HashMap<>();
+
     private FullHttpRequest request;
 
     public AvalonRequest(ChannelHandlerContext context, FullHttpRequest request) {
         this.context = context;
         this.request = request;
     }
+
 
     public String getUrl() {
         return request.uri();
@@ -42,8 +45,8 @@ public class AvalonRequest implements HttpRequest {
     }
 
     @Override
-    public Map<String, Object> getParameters() {
-        return getRequestParams(request);
+    public Map<String, String> getParameters() {
+        return this.parameters;
     }
 
     @Override
@@ -71,17 +74,11 @@ public class AvalonRequest implements HttpRequest {
         return request.headers().contains(name,value,true);
     }
 
-    private Map<String, Object> getRequestParams(FullHttpRequest request) {
-        HttpPostRequestDecoder decoder = new HttpPostRequestDecoder(new DefaultHttpDataFactory(false), request);
-        List<InterfaceHttpData> httpPostData = decoder.getBodyHttpDatas();
-        Map<String, Object> params = new HashMap<>();
+    public FullHttpRequest getRequest() {
+        return request;
+    }
 
-        for (InterfaceHttpData data : httpPostData) {
-            if (data.getHttpDataType() == InterfaceHttpData.HttpDataType.Attribute) {
-                MemoryAttribute attribute = (MemoryAttribute) data;
-                params.put(attribute.getName(), attribute.getValue());
-            }
-        }
-        return params;
+    public void addParams(Map<String, String> requestParams) {
+        this.parameters.putAll(requestParams);
     }
 }
