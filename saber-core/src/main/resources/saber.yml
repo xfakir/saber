@@ -1,1 +1,6 @@
 test: aa
+spring:
+  aaa: bb
+  cc: ddd
+  dd:
+    ccc: ccc

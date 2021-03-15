@@ -12,6 +12,6 @@ public class RequestBodyArgumentResolver implements HandlerMethodArgumentResolve
     @Override
     public Object resolveArgument(MethodParameter methodParameter, HttpRequest request) {
 
-        return null;
+        return request.getParameter(methodParameter.getParameterName());
     }
 }

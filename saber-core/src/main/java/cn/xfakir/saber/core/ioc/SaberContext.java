@@ -27,8 +27,12 @@ public class SaberContext extends AbstractContext{
         if(gardenOfAvalon == null) {
             this.gardenOfAvalon = new GardenOfAvalon();
         }
-
-        Avalon avalon = new Avalon(Integer.parseInt(getProperty("port")));
+        String portValue = getProperty("port");
+        int port = 8080;
+        if (portValue != null) {
+            port = Integer.parseInt(portValue);
+        }
+        Avalon avalon = new Avalon(port);
         prepareContext(avalon);
         this.gardenOfAvalon.setAvalon(avalon);
         startServer();

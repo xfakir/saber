@@ -25,7 +25,7 @@ public class DefaultComponentRegistry {
         try {
             Class<?> clazz = Class.forName(beanClassName);
             DefaultBeanDefinition beanDefinition =
-                    new DefaultBeanDefinition(beanName,"singleton",clazz);
+                    new DefaultBeanDefinition(beanClassName,"singleton",clazz);
             beanFactory.registerBeanDefinition(beanName,beanDefinition);
             beanFactory.registerBeanName(beanName);
             beanFactory.instantiateSingleton(beanName);

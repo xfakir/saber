@@ -10,6 +10,8 @@ public class StringTest {
         int index = url.indexOf("{");
         System.out.println(index);
         System.out.println(url.substring(0,index-1));
-        System.out.println(Arrays.toString(StringUtils.substringsBetween(url, "{", "}")));
+
+        String value = "${ss.sss.ssss}";
+        System.out.println(Arrays.toString(StringUtils.substringsBetween(value, "{", "}")));
     }
 }

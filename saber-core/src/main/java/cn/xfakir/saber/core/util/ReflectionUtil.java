@@ -49,4 +49,15 @@ public class ReflectionUtil {
             ctor.setAccessible(true);
         }
     }
+
+    public static void makeAccessible(Field field) {
+        if (!field.isAccessible()) {
+            field.setAccessible(true);
+        }
+    }
+    public static void makeAccessible(Method method) {
+        if (!method.isAccessible()) {
+            method.setAccessible(true);
+        }
+    }
 }

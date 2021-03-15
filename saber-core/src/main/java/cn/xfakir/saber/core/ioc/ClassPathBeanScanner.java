@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.util.Enumeration;
@@ -96,10 +97,18 @@ public class ClassPathBeanScanner {
     private static void doAddClass(Set<BeanDefinitionHolder>  beanDefinitionSet, String beanClassName, String beanName) {
         Class<?> cls = loadClass(beanClassName, false);
         if (supportClass(cls)) {
-            BeanDefinition beanDefinition = new DefaultBeanDefinition(beanClassName,"singleton",cls);
-            BeanDefinitionHolder beanDefinitionHolder = new BeanDefinitionHolder(beanName,beanDefinition);
+            //
+            BeanDefinitionHolder beanDefinitionHolder = new BeanDefinitionHolder(beanName,createBeanDefinition(beanClassName,cls));
             beanDefinitionSet.add(beanDefinitionHolder);
         }
+    }
+
+    private static BeanDefinition createBeanDefinition(String beanClassName, Class<?> cls) {
+        BeanDefinition beanDefinition = new DefaultBeanDefinition(beanClassName,"singleton",cls);
+
+        Field[] declaredFields = cls.getDeclaredFields();
+        beanDefinition.setFields(declaredFields);
+        return beanDefinition;
     }
 
     private static boolean supportClass(Class<?> cls) {

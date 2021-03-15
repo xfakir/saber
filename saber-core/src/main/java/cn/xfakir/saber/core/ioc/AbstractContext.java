@@ -16,7 +16,7 @@ public abstract class AbstractContext extends DefaultBeanFactory implements Sabe
     private final Set<SaberListener<?>> saberListenerSet = new LinkedHashSet<>();
 
     private final DefaultBeanFactory beanFactory;
-    private Map<String, String> properties;
+
 
 
     //private Set<SaberEvent> saberEventSet;
@@ -94,12 +94,11 @@ public abstract class AbstractContext extends DefaultBeanFactory implements Sabe
         this.source = source;
     }
 
-     private void loadProperties(Object source) {
-        this.properties = PropertiesLoaderUtil.loadProperties(source.getClass());
-     }
+    private void loadProperties(Object source) {
+        Map<String, Object> properties = PropertiesLoaderUtil.loadProperties(source.getClass());
+        YmlProperty property = new YmlProperty(properties);
+        registerSingleton("properties",property);
 
-
-    public String getProperty(String name) {
-        return this.properties.get(name);
     }
+
 }

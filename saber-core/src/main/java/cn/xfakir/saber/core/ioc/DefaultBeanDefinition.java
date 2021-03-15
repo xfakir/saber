@@ -1,11 +1,17 @@
 package cn.xfakir.saber.core.ioc;
 
+import java.lang.reflect.Field;
+
 public class DefaultBeanDefinition implements BeanDefinition{
     private String beanClassName;
 
     private String scope;
 
     private volatile Object beanClass;
+
+    private String[] dependsOn;
+
+    private Field[] fields;
 
     public DefaultBeanDefinition(String beanClassName, String scope, Object beanClass) {
         this.beanClassName = beanClassName;
@@ -38,6 +44,27 @@ public class DefaultBeanDefinition implements BeanDefinition{
         return "singleton".equals(getScope());
     }
 
+    @Override
+    public void setDependsOn(String... dependsOn) {
+        this.dependsOn = dependsOn;
+    }
+
+    @Override
+    public String[] getDependsOn() {
+        return this.dependsOn;
+    }
+
+    @Override
+    public void setFields(Field... fields) {
+        this.fields = fields;
+    }
+
+    @Override
+    public Field[] getFields() {
+        return this.fields;
+    }
+
+    @Override
     public Class<?> getBeanClass() {
         return (Class<?>) beanClass;
     }
