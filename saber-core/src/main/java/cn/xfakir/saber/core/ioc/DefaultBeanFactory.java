@@ -67,7 +67,7 @@ public class DefaultBeanFactory implements BeanFactory{
 
 
     private Object createBean(String beanName, BeanDefinition beanDefinition) {
-        Object bean = ReflectionUtil.newInstance(beanDefinition.getClass());
+        Object bean = ReflectionUtil.newInstance((Class<?>) beanDefinition.getBeanClass());
         if (beanDefinition.isSingleton() && isSingletonInCreation(beanName)) {
             synchronized (this.singletonObjects) {
                 if (!this.singletonObjects.containsKey(beanName)) {
@@ -95,6 +95,9 @@ public class DefaultBeanFactory implements BeanFactory{
     }
 
     private void populateBean(String beanName,Object bean, BeanDefinition beanDefinition) {
+        if (beanDefinition.getFields() == null) {
+            return;
+        }
         for (Field field : beanDefinition.getFields()) {
             if (field.isAnnotationPresent(Inject.class)) {
                 handleInjectField(bean,beanDefinition,field);
@@ -112,7 +115,7 @@ public class DefaultBeanFactory implements BeanFactory{
         ReflectionUtil.setField(bean,field,getProperty(key));
     }
 
-    public String getProperty(String key) {
+    public Object getProperty(String key) {
         YmlProperty property = (YmlProperty) getBean("properties");
         return property.getProperty(key);
     }
@@ -181,6 +184,9 @@ public class DefaultBeanFactory implements BeanFactory{
     public void preInstantiateSingletons() {
         List<String> beanNames = new ArrayList<>(this.beanNames);
         for (String beanName : beanNames) {
+            if (this.singletonObjects.containsKey(beanName)) {
+                continue;
+            }
             BeanDefinition beanDefinition = getBeanDefinition(beanName);
             Object bean = getBean(beanName);
             if (beanDefinition.isSingleton()) {

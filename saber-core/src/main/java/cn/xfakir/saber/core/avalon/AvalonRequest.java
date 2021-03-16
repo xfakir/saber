@@ -6,11 +6,11 @@ import io.netty.handler.codec.http.multipart.DefaultHttpDataFactory;
 import io.netty.handler.codec.http.multipart.HttpPostRequestDecoder;
 import io.netty.handler.codec.http.multipart.InterfaceHttpData;
 import io.netty.handler.codec.http.multipart.MemoryAttribute;
+import io.netty.util.CharsetUtil;
 
 import java.util.*;
 
 public class AvalonRequest implements HttpRequest {
-    private ChannelHandlerContext context;
 
     private Map<String,Object> attributes = new HashMap<>();
 
@@ -18,14 +18,14 @@ public class AvalonRequest implements HttpRequest {
 
     private FullHttpRequest request;
 
-    public AvalonRequest(ChannelHandlerContext context, FullHttpRequest request) {
-        this.context = context;
+    public AvalonRequest(FullHttpRequest request) {
         this.request = request;
     }
 
 
-    public String getUrl() {
-        return request.uri();
+    @Override
+    public String getContent() {
+        return request.content().toString(CharsetUtil.UTF_8);
     }
 
 

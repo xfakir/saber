@@ -1,10 +1,10 @@
 package cn.xfakir.saber.core.config;
 
-public class Saber {
+public class SaberObject {
     private String name;
     private String weapon;
 
-    public Saber(String name, String weapon) {
+    public SaberObject(String name, String weapon) {
         this.name = name;
         this.weapon = weapon;
     }

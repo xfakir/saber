@@ -2,12 +2,14 @@ package cn.xfakir.saber.core.mvc;
 
 import cn.xfakir.saber.core.avalon.HttpRequest;
 import cn.xfakir.saber.core.common.collection.MultiValueMap;
+import cn.xfakir.saber.core.util.AntPathMatcher;
 import cn.xfakir.saber.core.util.UrlPathHelper;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RequestMappingHandlerMapping implements HandlerMapping{
@@ -21,10 +23,28 @@ public class RequestMappingHandlerMapping implements HandlerMapping{
     public HandlerExecutionChain getHandler(HttpRequest request) {
         String path = UrlPathHelper.getPathFromRequest(request);
         String lookUpUrl = UrlPathHelper.getLookUpUrlFromFullPath(path);
-        RequestMappingInfo requestMappingInfoList = urlLookUp.getFirst(lookUpUrl);
-        HandlerMethod handlerMethod = mappingLookUp.get(requestMappingInfoList);
+        RequestMappingInfo requestMappingInfo = urlLookUp.getFirst(lookUpUrl);
+        if (requestMappingInfo == null) {
+            requestMappingInfo = getMappingInfo(lookUpUrl);
+        }
+        HandlerMethod handlerMethod = mappingLookUp.get(requestMappingInfo);
         return getHandlerExecutionChain(handlerMethod, request);
     }
+
+    private RequestMappingInfo getMappingInfo(String lookUpUrl) {
+        for (Map.Entry<String, List<RequestMappingInfo>> entry : urlLookUp.getMap().entrySet()) {
+            for (RequestMappingInfo requestMappingInfo : entry.getValue()) {
+                String url = requestMappingInfo.getPattern();
+                AntPathMatcher matcher = new AntPathMatcher();
+                if (matcher.match(url,lookUpUrl)) {
+                    return requestMappingInfo;
+                }
+            }
+        }
+        return null;
+    }
+
+
 
     public void register(RequestMappingInfo info, Object handler, Method method) {
         MethodParameter[] methodParameters = createMethodParameters(method,handler);
@@ -39,7 +59,7 @@ public class RequestMappingHandlerMapping implements HandlerMapping{
         MethodParameter[] methodParameters = new MethodParameter[parameters.length];
         for (int i= 0;i<parameters.length;i++) {
             MethodParameter methodParameter = new MethodParameter(method,i,parameters[i].getType(),
-                    (Class<?>) handler,parameters[i].getAnnotations(),parameters[i].getName());
+                     handler.getClass(),parameters[i].getAnnotations(),parameters[i].getName());
             methodParameters[i] = methodParameter;
         }
 

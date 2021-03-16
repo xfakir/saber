@@ -12,12 +12,13 @@ public class ReflectionUtil {
     public static final Logger LOGGER = LoggerFactory.getLogger(ReflectionUtil.class);
 
     public static Object newInstance(Class<?> clazz) {
-        Object instance;
+        Object instance = null;
         try {
             instance = clazz.newInstance();
-        } catch (Exception e) {
-            LOGGER.error("new instance failure",e);
-            throw new SaberException(e);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
         }
         return instance;
     }

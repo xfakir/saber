@@ -13,8 +13,8 @@ public class SaberContext extends AbstractContext{
 
     private AvalonContext avalonContext;
 
-    public SaberContext(String sourcePackage) {
-        super(sourcePackage);
+    public SaberContext(Class<?> source) {
+        super(source);
     }
 
     @Override
@@ -27,24 +27,26 @@ public class SaberContext extends AbstractContext{
         if(gardenOfAvalon == null) {
             this.gardenOfAvalon = new GardenOfAvalon();
         }
-        String portValue = getProperty("port");
+        Object portValue = getProperty("port");
         int port = 8080;
         if (portValue != null) {
-            port = Integer.parseInt(portValue);
+            port = (int) portValue;
         }
         Avalon avalon = new Avalon(port);
         prepareContext(avalon);
         this.gardenOfAvalon.setAvalon(avalon);
-        startServer();
     }
 
-    private void startServer() {
+    @Override
+    public void startServer() {
         this.gardenOfAvalon.start();
     }
 
     private void prepareContext(Avalon avalon) {
         AvalonContext context = new AvalonContext();
         context.setAttribute("saberContext",this);
+        avalon.setServletContext(context);
+        context.init();
     }
 
 

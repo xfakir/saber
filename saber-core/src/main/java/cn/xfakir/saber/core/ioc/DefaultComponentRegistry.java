@@ -1,6 +1,8 @@
 package cn.xfakir.saber.core.ioc;
 
 import cn.xfakir.saber.core.exception.SaberException;
+import cn.xfakir.saber.core.mvc.RequestMappingHandlerAdapter;
+import cn.xfakir.saber.core.mvc.RequestMappingHandlerMapping;
 
 public class DefaultComponentRegistry {
     private static final String DEFAULT_HANDLER_ADAPTER = "cn.xfakir.saber.core.mvc.RequestMappingHandlerAdapter";
@@ -13,25 +15,25 @@ public class DefaultComponentRegistry {
 
     private static void registerHandlerMapping(DefaultBeanFactory beanFactory) {
         String beanName = "handlerMapping";
-        doRegister(beanFactory, beanName, DEFAULT_HANDLER_MAPPING);
+        doRegister(beanFactory, beanName, new RequestMappingHandlerMapping());
     }
 
     private static void registerHandlerAdapter(DefaultBeanFactory beanFactory) {
         String beanName = "handlerAdapter";
-        doRegister(beanFactory, beanName, DEFAULT_HANDLER_ADAPTER);
+        doRegister(beanFactory, beanName, new RequestMappingHandlerAdapter());
     }
 
-    private static void doRegister(DefaultBeanFactory beanFactory, String beanName, String beanClassName) {
-        try {
+    private static void doRegister(DefaultBeanFactory beanFactory, String beanName, Object object) {
+        /*try {
             Class<?> clazz = Class.forName(beanClassName);
             DefaultBeanDefinition beanDefinition =
                     new DefaultBeanDefinition(beanClassName,"singleton",clazz);
             beanFactory.registerBeanDefinition(beanName,beanDefinition);
-            beanFactory.registerBeanName(beanName);
             beanFactory.instantiateSingleton(beanName);
         } catch (ClassNotFoundException e) {
             throw new SaberException(e);
-        }
+        }*/
+        beanFactory.registerSingleton(beanName,object);
     }
 
 }

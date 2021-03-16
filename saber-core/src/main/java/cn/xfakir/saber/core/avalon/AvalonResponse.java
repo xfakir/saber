@@ -29,7 +29,7 @@ public class AvalonResponse implements HttpResponse {
         if (out == null || out.length() == 0) {
             return;
         }
-        response.replace(Unpooled.wrappedBuffer(out.getBytes(StandardCharsets.UTF_8)));
+        response.content().writeBytes(Unpooled.copiedBuffer(out.getBytes(StandardCharsets.UTF_8)));
     }
 
     @Override

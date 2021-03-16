@@ -13,6 +13,9 @@ public class DefaultBeanDefinition implements BeanDefinition{
 
     private Field[] fields;
 
+    public DefaultBeanDefinition() {
+    }
+
     public DefaultBeanDefinition(String beanClassName, String scope, Object beanClass) {
         this.beanClassName = beanClassName;
         this.scope = scope;

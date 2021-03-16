@@ -12,7 +12,15 @@ public class UrlPathHelper {
     }
 
     public static String getLookUpUrlFromFullPath(String path) {
-        return path.substring(0,path.indexOf("{")-1);
+        if (!path.contains("?")) {
+            if (!path.contains("{")) {
+                return path;
+            } else {
+                return path.substring(0,path.indexOf("{")-1);
+            }
+        } else {
+            return path.substring(0,path.indexOf("?"));
+        }
     }
 
     public static String[] getParametersFromPath(String path) {
@@ -23,4 +31,5 @@ public class UrlPathHelper {
         String[] split = requestUri.split("/");
         return Arrays.copyOfRange(split,split.length-length,split.length);
     }
+
 }

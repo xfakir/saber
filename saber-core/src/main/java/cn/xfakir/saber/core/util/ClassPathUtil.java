@@ -1,11 +1,20 @@
 package cn.xfakir.saber.core.util;
 
+import cn.xfakir.saber.core.boot.Saber;
+
 import java.net.URL;
 
 public class ClassPathUtil {
     public static String getSourcePath(Class<?> sourceClass) {
-        String fullPath = sourceClass.getResource("").toString();
-        String basePath = sourceClass.getResource("/").toString();
-        return fullPath.substring(basePath.length(), fullPath.length() - 1).replace("/", ".");
+        String className = sourceClass.getName();
+        int lastIndex = className.lastIndexOf(".");
+        return className.substring(0,lastIndex);
+    }
+
+    public static void main(String[] args) {
+        System.out.println(Saber.class.getName());
+        System.out.println(ClassPathUtil.getSourcePath(Saber.class));
+        System.out.println(Thread.currentThread().getContextClassLoader().getResource("").toString());
+        System.out.println(Thread.currentThread().getContextClassLoader().getResource("/").toString());
     }
 }

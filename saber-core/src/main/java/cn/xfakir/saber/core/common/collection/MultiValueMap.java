@@ -19,11 +19,18 @@ public class MultiValueMap<K,V> {
     }
 
     public V getFirst(K key) {
-        return this.get(key).get(0);
+        List<V> list = this.get(key);
+        if (list != null) {
+            return list.get(0);
+        }
+        return null;
     }
 
     public List<V> get(K key) {
         return this.map.get(key);
     }
 
+    public Map<K, List<V>> getMap() {
+        return map;
+    }
 }

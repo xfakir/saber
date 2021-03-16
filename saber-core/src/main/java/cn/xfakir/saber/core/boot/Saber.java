@@ -10,7 +10,7 @@ import cn.xfakir.saber.core.util.PropertiesLoaderUtil;
 import java.util.Map;
 
 public class Saber {
-    private String source;
+    private Class<?> source;
 
     private static final String DEFAULT_CONTEXT_CLASS = "cn.xfakir.saber.core.ioc.SaberContext";
 
@@ -22,7 +22,7 @@ public class Saber {
     }
 
     private void init(Object source) {
-        this.source = ClassPathUtil.getSourcePath(source.getClass());
+        this.source = (Class<?>) source;
         //loadProperties(source);
     }
 
@@ -37,19 +37,13 @@ public class Saber {
 
     public void run() {
         try {
-            SaberContext saberContext = createSaberContext();
-            initContext(saberContext);
-
+            createSaberContext();
 
         } catch (SaberException e) {
             throw new SaberException(e);
         }
     }
 
-    private void initContext(SaberContext saberContext) {
-        saberContext.setSourcePath(this.source);
-        saberContext.init();
-    }
 
     private SaberContext createSaberContext() {
         return new SaberContext(source);

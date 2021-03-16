@@ -3,43 +3,49 @@ package cn.xfakir.saber.core.ioc;
 import cn.xfakir.saber.core.event.*;
 import cn.xfakir.saber.core.mvc.SaberRefreshEvent;
 import cn.xfakir.saber.core.util.ClassLoaderUtil;
+import cn.xfakir.saber.core.util.ClassPathUtil;
 import cn.xfakir.saber.core.util.PropertiesLoaderUtil;
 
 import java.util.*;
 
 public abstract class AbstractContext extends DefaultBeanFactory implements SaberEventPublisher {
-    protected String source;
+    protected Class<?> source;
+
     private String sourcePackage;
 
     private EventMulticaster saberEventMulticaster;
 
     private final Set<SaberListener<?>> saberListenerSet = new LinkedHashSet<>();
 
-    private final DefaultBeanFactory beanFactory;
+    //private final DefaultBeanFactory beanFactory;
 
 
 
     //private Set<SaberEvent> saberEventSet;
 
-    public AbstractContext(String sourcePackage) {
-        this.sourcePackage = sourcePackage;
-        this.beanFactory = new DefaultBeanFactory();
+    public AbstractContext(Class<?> source) {
+        this.source = source;
+        this.sourcePackage = ClassPathUtil.getSourcePath(source);
+        //this.beanFactory = new DefaultBeanFactory();
         init();
     }
 
     public void init() {
-        prepareBeanFactory(beanFactory);
+        prepareBeanFactory(this);
         loadProperties(source);
-        scanAndLoadClass(beanFactory);
-        registerDefaultComponent(beanFactory);
+        scanAndLoadClass(this);
+        registerDefaultComponent(this);
         initSaberEventMulticaster();
         //registerSaberListeners();
         //registerSaberInitializers();
         onRefresh();
-        instantiateBean(beanFactory);
+        instantiateBean(this);
+        startServer();
         //finishInit();
 
     }
+
+    protected abstract void startServer();
 
     private void registerDefaultComponent(DefaultBeanFactory beanFactory) {
         DefaultComponentRegistry.registerDefaultComponents(beanFactory);
@@ -80,9 +86,9 @@ public abstract class AbstractContext extends DefaultBeanFactory implements Sabe
         return this.saberEventMulticaster;
     }
 
-    public DefaultBeanFactory getBeanFactory() {
-        return beanFactory;
-    }
+    /*public DefaultBeanFactory getBeanFactory() {
+        return this;
+    }*/
 
     @Override
     public void publishEvent(SaberEvent event) {
@@ -90,12 +96,8 @@ public abstract class AbstractContext extends DefaultBeanFactory implements Sabe
     }
 
 
-    public void setSourcePath(String source) {
-        this.source = source;
-    }
-
     private void loadProperties(Object source) {
-        Map<String, Object> properties = PropertiesLoaderUtil.loadProperties(source.getClass());
+        Map<String, Object> properties = PropertiesLoaderUtil.loadProperties((Class<?>) source);
         YmlProperty property = new YmlProperty(properties);
         registerSingleton("properties",property);
 

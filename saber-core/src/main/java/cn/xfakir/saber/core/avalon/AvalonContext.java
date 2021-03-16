@@ -12,11 +12,8 @@ public class AvalonContext implements ServletContext {
 
     private Map<AvalonInitializer, Set<Class<?>>> initializers = new ConcurrentHashMap<>();
 
-    public AvalonContext() {
-        init();
-    }
 
-    private void init() {
+    public void init() {
         findInitializerClasses();
         invokeInitializers();
     }

@@ -24,12 +24,14 @@ public class AvalonHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         if (msg instanceof HttpRequest) {
             HttpRequest request = (HttpRequest) msg;
-            AvalonServlet avalonServlet = servletContext.getServlet("dispatchServlet");
+            AvalonServlet avalonServlet = servletContext.getServlet("dispatcherServlet");
             FullHttpResponse fullHttpResponse = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1,
                     HttpResponseStatus.OK);
             HttpResponse response = new AvalonResponse(ctx,fullHttpResponse);
+            System.out.println(request.getUri());
             avalonServlet.service(request,response);
             response.setHeader(HttpHeaderNames.CONTENT_TYPE, "application/json;charset=UTF-8");
+            System.out.println(response.getResponse().content().toString(CharsetUtil.UTF_8));
             ctx.writeAndFlush(response.getResponse()).addListener(ChannelFutureListener.CLOSE);
         }
     }

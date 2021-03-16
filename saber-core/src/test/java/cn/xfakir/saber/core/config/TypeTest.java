@@ -6,8 +6,8 @@ import cn.xfakir.saber.core.event.SaberListener;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-public class TypeTest {
-    static class Saber implements SaberListener<SaberEvent>{
+public class TypeTest implements TestInterface{
+    static class SaberTest implements SaberListener<SaberEvent>{
 
         @Override
         public void onSaberEvent(SaberEvent event) {
@@ -55,7 +55,9 @@ public class TypeTest {
     }
 
     public static void main(String[] args) {
-        Saber saber = new Saber();
+        TypeTest t = new TypeTest();
+        System.out.println(t instanceof TestInterface);
+        SaberTest saber = new SaberTest();
         Shirou shirou = new Shirou();
         Type saberType = getType(saber);
         Type shirouType = getType(shirou);

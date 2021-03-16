@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -27,10 +28,10 @@ public class DispatcherServlet implements AvalonServlet,SaberListener<SaberRefre
 
     private ServletContext servletContext;
 
-    private List<HandlerMapping> handlerMappings;
+    private List<HandlerMapping> handlerMappings = new LinkedList<>();
 
 
-    private List<HandlerAdapter> handlerAdapters;
+    private List<HandlerAdapter> handlerAdapters= new LinkedList<>();
 
 
     @Override
@@ -125,7 +126,7 @@ public class DispatcherServlet implements AvalonServlet,SaberListener<SaberRefre
             baseUrl = requestMapping.value();
         }
 
-        Method[] methods = clazz.getMethods();
+        Method[] methods = clazz.getDeclaredMethods();
         for (Method method : methods) {
             if (method.isAnnotationPresent(RequestMapping.class)) {
                 RequestMapping requestMapping = method.getAnnotation(RequestMapping.class);

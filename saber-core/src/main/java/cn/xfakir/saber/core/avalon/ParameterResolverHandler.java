@@ -18,6 +18,7 @@ public class ParameterResolverHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         AvalonRequest request = (AvalonRequest) msg;
+        System.out.println("resolver");
         resolveParameters(request);
         ctx.fireChannelRead(request);
     }

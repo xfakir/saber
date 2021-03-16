@@ -6,9 +6,10 @@
 
     <groupId>cn.xfakir</groupId>
     <artifactId>saber</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
     <modules>
         <module>saber-core</module>
+        <module>saber-test</module>
     </modules>
 
     <packaging>pom</packaging>
